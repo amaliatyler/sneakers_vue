@@ -1,5 +1,5 @@
 <template>
-  <div class="flex border items-center border-slate-200 p-4 rounded-xl">
+  <div class="flex border items-center border-slate-200 p-4 rounded-xl gap-4">
     <img class="w-16 h-16" src="/sneakers/sneakers-1.jpg" alt="Sneaker" />
 
     <div class="flex flex-col">
