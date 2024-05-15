@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive, watch } from 'vue'
 import axios from 'axios'
 
 import Header from './components/Header.vue'
@@ -8,15 +8,31 @@ import Drawer from './components/Drawer.vue'
 
 const items = ref([])
 
-onMounted(async () => {
+const filters = reactive({
+  sortBy: '',
+  searchQuery: ''
+})
+
+const onChangeSelect = (event) => {
+  filters.sortBy = event.target.value
+}
+
+const fetchItems = async () => {
   try {
+    const params = {
+      sortBy: filters.sortBy,
+      searchQuery: filters.searchQuery
+    }
+
     const { data } = await axios.get('https://1741fc408e0f10be.mokky.dev/items')
     items.value = data
-    console.log(data)
   } catch (err) {
     console.error(err)
   }
-})
+}
+
+onMounted(fetchItems)
+watch(filters, fetchItems)
 </script>
 
 <template>
@@ -29,10 +45,10 @@ onMounted(async () => {
         <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
 
         <div class="flex flex-wrap gap-4 h-min">
-          <select class="py-2 px-3 border rounded-md outline-none">
-            <option>По названию</option>
-            <option>По цене (по возрастанию)</option>
-            <option>По цене (по убыванию)</option>
+          <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
+            <option value="name">По названию</option>
+            <option value="price">По цене (по возрастанию)</option>
+            <option value="-price">По цене (по убыванию)</option>
           </select>
 
           <div class="relative h-min">
