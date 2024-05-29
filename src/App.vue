@@ -9,7 +9,7 @@ import Drawer from './components/Drawer.vue'
 const items = ref([])
 
 const filters = reactive({
-  sortBy: '',
+  sortBy: 'title',
   searchQuery: ''
 })
 
@@ -17,14 +17,23 @@ const onChangeSelect = (event) => {
   filters.sortBy = event.target.value
 }
 
+const onChangeInput = (event) => {
+  filters.searchQuery = event.target.value
+}
+
 const fetchItems = async () => {
   try {
     const params = {
       sortBy: filters.sortBy,
-      searchQuery: filters.searchQuery
     }
 
-    const { data } = await axios.get('https://1741fc408e0f10be.mokky.dev/items')
+    if(filters.searchQuery) {
+      params.title = `*${filters.searchQuery}*`
+    }
+
+    const { data } = await axios.get('https://1741fc408e0f10be.mokky.dev/items', {
+      params
+    })
     items.value = data
   } catch (err) {
     console.error(err)
@@ -58,6 +67,7 @@ watch(filters, fetchItems)
               alt="Search"
             />
             <input
+              @input="onChangeInput"
               class="border rounded-md py-2 pl-10 pr-4 outline-none focus:border-gray-400"
               type="text"
               placeholder="Поиск..."
