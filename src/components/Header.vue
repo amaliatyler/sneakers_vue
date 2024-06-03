@@ -1,3 +1,10 @@
+<script setup>
+
+const emit = defineEmits(['openDrawer']);
+
+
+</script>
+
 <template>
   <header class="flex justify-between border-b border-slate-100 px-10 py-8">
     <div class="flex items-center gap-4">
@@ -8,8 +15,11 @@
       </div>
     </div>
     <ul class="flex items-center gap-10">
-      <li>
-        <a href="#" class="flex items-center gap-3 text-gray-500 hover:text-black">
+      <li
+        @click="() => emit('openDrawer')"
+      >
+        <a 
+          href="#" class="flex items-center gap-3 text-gray-500 hover:text-black">
           <img src="/cart.svg" alt="Cart" />
           <span class="font-bold">1205 руб.</span></a
         >

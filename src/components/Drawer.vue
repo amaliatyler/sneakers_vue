@@ -1,6 +1,13 @@
 <script setup>
 import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
+
+const props = defineProps({
+  cart: Array
+})
+
+const btnActive = props.cart.length <= 0;
+
 </script>
 
 <template>
@@ -22,7 +29,7 @@ import CartItemList from './CartItemList.vue'
         <span class="font-bold">900 руб.</span>
       </div>
       <button
-        disabled="true"
+        :disabled="btnActive"
         class="bg-[#9DD458] w-full rounded-xl py-3 mt-4 text-white transition disabled:bg-slate-300 disabled:cursor-not-allowed hover:bg-[#8bb950] active:bg-[#82a653] cursor-pointer"
       >
         Оформить заказ
