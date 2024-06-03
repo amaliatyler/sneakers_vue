@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, reactive, provide, watch } from 'vue'
+import { onMounted, ref, reactive, provide, watch, computed } from 'vue'
 import axios from 'axios'
 
 import Header from './components/Header.vue'
@@ -10,6 +10,15 @@ const items = ref([]);
 const cart = ref([]);
 
 const drawerIsOpen = ref(false);
+
+// const totalPrice = ref(0);
+
+// const updateCartPrice = () => {
+//   totalPrice.value = cart.value.reduce((acc, item) => acc + item.price, 0);
+// }
+
+const totalPrice = computed(() => cart.value.reduce((acc, item) => acc + item.price, 0));
+const vatPrice = computed(() => Math.round((totalPrice.value * 5) / 100));
 
 const openDrawer = () => {
   drawerIsOpen.value = true;
@@ -27,12 +36,13 @@ const filters = reactive({
 const addToCart = (item) => {
   item.isAdded = true;
   cart.value.push(item);
-  
+  // updateCartPrice();
 }
 
 const removeFromCart = (item) => {
  item.isAdded = false;
  cart.value.splice(cart.value.indexOf(item), 1);
+//  updateCartPrice();
 }
 
 const onClickPlus = async (item) => {
@@ -138,9 +148,9 @@ provide('cart', {
 </script>
 
 <template>
-  <Drawer v-if="drawerIsOpen" :cart="cart"/>
+  <Drawer v-if="drawerIsOpen" :cart="cart" :total-price="totalPrice" :vatPrice="vatPrice"/>
   <div class="bg-white w-4/5 mx-auto rounded-xl shadow-xl mt-14">
-    <Header @open-drawer="openDrawer"/>
+    <Header :total-price="totalPrice" @open-drawer="openDrawer"/>
 
     <div class="p-10">
       <div class="flex justify-between align-items">

@@ -3,7 +3,9 @@ import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
 
 const props = defineProps({
-  cart: Array
+  cart: Array,
+  totalPrice: Number,
+  vatPrice: Number
 })
 
 const btnActive = props.cart.length <= 0;
@@ -21,12 +23,12 @@ const btnActive = props.cart.length <= 0;
       <div class="flex gap-3">
         <span>Итого:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <span class="font-bold">12990 руб.</span>
+        <span class="font-bold">{{ totalPrice}} руб.</span>
       </div>
       <div class="flex gap-3">
         <span>Налог:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <span class="font-bold">900 руб.</span>
+        <span class="font-bold">{{ vatPrice}} руб.</span>
       </div>
       <button
         :disabled="btnActive"
