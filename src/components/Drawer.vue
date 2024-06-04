@@ -2,13 +2,15 @@
 import DrawerHead from './DrawerHead.vue'
 import CartItemList from './CartItemList.vue'
 
-const props = defineProps({
+defineProps({
   cart: Array,
   totalPrice: Number,
-  vatPrice: Number
+  vatPrice: Number,
+  buttonDisabled: Boolean
 })
 
-const btnActive = props.cart.length <= 0;
+const emit = defineEmits(['createOrder']);
+
 
 </script>
 
@@ -31,7 +33,8 @@ const btnActive = props.cart.length <= 0;
         <span class="font-bold">{{ vatPrice}} руб.</span>
       </div>
       <button
-        :disabled="btnActive"
+        @click="() => emit('createOrder')"
+        :disabled="buttonDisabled"
         class="bg-[#9DD458] w-full rounded-xl py-3 mt-4 text-white transition disabled:bg-slate-300 disabled:cursor-not-allowed hover:bg-[#8bb950] active:bg-[#82a653] cursor-pointer"
       >
         Оформить заказ
